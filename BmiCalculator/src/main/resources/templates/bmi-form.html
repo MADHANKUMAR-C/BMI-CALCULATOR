@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffecd2);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a4a4a;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45b7aa;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .result h2 {
+            color: #ff6b6b;
+        }
+        .result p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        
+        <!-- BMI Input Form -->
+        <form th:action="@{/calculate}" th:object="${bmiData}" method="post" th:if="${bmiData.bmi == null}">
+            <div class="form-group">
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height" th:field="*{height}" required step="0.1" min="1">
+            </div>
+            
+            <div class="form-group">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" th:field="*{weight}" required step="0.1" min="1">
+            </div>
+            
+            <button type="submit">Calculate BMI</button>
+        </form>
+        
+        <!-- BMI Result -->
+        <div class="result" th:if="${bmiData.bmi != null}">
+            <h2>Your BMI Result</h2>
+            <p>BMI: <span th:text="${#numbers.formatDecimal(bmiData.bmi, 1, 1)}"></span></p>
+            <p>Category: <span th:text="${bmiData.category}"></span></p>
+            <form th:action="@{/}" method="get">
+                <button type="submit">Calculate Again</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
